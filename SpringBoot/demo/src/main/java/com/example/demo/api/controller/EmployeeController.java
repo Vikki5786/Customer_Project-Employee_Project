@@ -54,6 +54,17 @@ public class EmployeeController {
 		return employeeRepository.findById(id);
 	}
 
+	@PutMapping("/update/{id}")
+	public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
+		Employee updateEmployee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
+		updateEmployee.setAddress(employeeDetails.getAddress());
+		updateEmployee.setDept(employeeDetails.getDept());
+		updateEmployee.setEmpName(employeeDetails.getEmpName());
+		updateEmployee.setPhoNo(employeeDetails.getPhoNo());
+		employeeRepository.save(updateEmployee);
+
+        return ResponseEntity.ok(updateEmployee);
+	}
 	@GetMapping("/search") 
 	public ResponseEntity<Employee> searchUsers(@RequestParam("name") Employee name) { 
 		return ResponseEntity.ok(name); 
